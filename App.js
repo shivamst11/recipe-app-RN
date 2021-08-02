@@ -16,10 +16,13 @@ import {
   Text,
   useColorScheme,
   View,
+  
 } from 'react-native';
+import {
+  initialWindowMetrics,
+  SafeAreaProvider,
+} from 'react-native-safe-area-context';
 import MainRoute from './src/Routes/Routes';
-import { NavigationContainer } from '@react-navigation/native';
-
 
 
 
@@ -27,8 +30,17 @@ const App =() => {
  
 
   return (
-  
+
+<SafeAreaProvider>
+
+<StatusBar
+          backgroundColor={"#fff"}
+          barStyle={'dark-content'}
+        />
+
       <MainRoute/>
+ 
+</SafeAreaProvider>
  
   
   );
