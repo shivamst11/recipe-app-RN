@@ -19,6 +19,7 @@ import Profile from '../Component/Profile';
 import Notification from '../Component/Notification';
 import Search from '../Component/Search';
 import GlobalStyles from '../Utility/GlobalStyles';
+import CustomImage from '../ReusableComponents/CustomImage';
 
 const Tab = createBottomTabNavigator();
 
@@ -43,7 +44,7 @@ function MainRoute() {
             ),
           }}
         />
-
+ 
         <Tab.Screen
           name="Post"
           component={Post}
@@ -70,7 +71,7 @@ function MainRoute() {
             ),
             tabBarIcon: ({focused}) => (
               <View style={styles.searchCircle}>
-                <Image
+                <CustomImage
                   
                   source={require('../Assets/Image/search.png')}
                   style={[styles.searchImg,focused?{tintColor:black}:{tintColor:grey}]}
@@ -115,7 +116,7 @@ function MainRoute() {
 }
 
 function MyTabBarLabel(props) {
-  console.log(props);
+
   return (
     <Text
       style={[
@@ -141,7 +142,6 @@ const styles = StyleSheet.create({
   searchImg: {
     width: 18,
     height: 18,
-    
     alignContent: 'center',
   },
   searchCircle: {

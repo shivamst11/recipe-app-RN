@@ -19,8 +19,8 @@ var GlobalStyles = {
     lightBlue: '#ADD8E6',
     grey: '#9FA5C0',
     lightGrey: '#7d8aa0',
-    veryLightGrey: '#f4f4f4',
-    darkGrey: '#9b9b9b',
+    veryLightGrey: '#F4F5F7',
+    darkGrey: '#3E5481',
     charcoalGrey: '#384652',
     loaderColor: 'rgba(0, 0, 0, 0.1)',
     orange: '#ff9900',
@@ -29,7 +29,53 @@ var GlobalStyles = {
     errorRed: '#bd5d5b',
     lightyellow: '#FFF395'
   },
-  
+  defaultBtn: {
+    height: 50,
+    backgroundColor: '#254376',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 4,
+    flexDirection: 'row',
+  },
+  buttonTitle: {
+  fontFamily: 'Inter',
+    fontSize: 20,
+    fontWeight:'bold',
+    color: '#FF6464',
+  },
+  headerTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  listFooter: {
+    
+    height: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyList: {
+    flex: 1,
+    alignItems: 'center',
+    marginTop: 60,
+  },
+ 
+  fullFlex: {
+    flex: 1,
+  },
+  keyboardAvoider: {
+    flexGrow: 1,
+  },
+  rowView: {
+    flexDirection: 'row',
+  },
+  backBtn: {
+    height: 44,
+    width: 65,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
 };
 
 export default GlobalStyles;
