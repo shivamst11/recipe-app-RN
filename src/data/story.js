@@ -2,41 +2,41 @@ export const storyData=[
     {
         id:1,
         name:"shivam",
-        image:'https://iili.io/AZdOU7.png'
+        image:'https://iili.io/Abw35g.png'
     },
     {
         id:2,
         name:"karan",
-        image:'https://iili.io/AZdvRe.png'
+        image:'https://iili.io/Abw2dF.png'
     },
     {
         id:3,
         name:"swapnil",
-        image:'https://iili.io/AZd8Ou.png'
+        image:'https://iili.io/AbwFea.png'
     },
     {
         id:4,
         name:"vikas",
-        image:'https://iili.io/AZdkJ9.png'
+        image:'https://iili.io/AbXlqP.png'
     },
     {
         id:5,
         name:"shiv",
-        image:'https://iili.io/AZdSDb.png'
+        image:'https://iili.io/AbwJg1.th.png'
     },
     {
         id:6,
         name:"prabhu",
-        image:'https://iili.io/AZd8Ou.png'
+        image:'https://iili.io/AbXM7a.png'
     },
     {
         id:7,
         name:"prem",
-        image:'https://iili.io/AZd8Ou.png'
+        image:'https://iili.io/AbwFea.png'
     },
     {
         id:8,
         name:"prem",
-        image:'https://iili.io/AZd8Ou.png'
+        image:'https://iili.io/AbwFea.png'
     }
 ]

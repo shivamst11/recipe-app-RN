@@ -12,26 +12,32 @@ import {
   StyleSheet,
   SafeAreaView,
   FlatList,
-  Image,
-  Alert,
   ScrollView,
+  Dimensions
 } from 'react-native';
 import CustomImage from '../ReusableComponents/CustomImage';
 import {storyData} from '../data/story';
 import GlobalStyles from '../Utility/GlobalStyles';
 import CustomButton from '../ReusableComponents/CustomButton';
 import {category} from '../data/category';
+import { RecipeDetails } from '../data/recipeDetails';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { BlurView, VibrancyView } from "@react-native-community/blur";
+
+let {width} = Dimensions.get('window');
+
+const OPTION_WIDTH = (width - 120) / 4;
 
 function Home() {
 
+ 
   const [selectedItemIndex, setselectedItemIndex]=useState(0);
 
-  const RenderStory = () => {
+  const renderStory = () => {
     return (
       <View>
         <FlatList
           data={storyData}
-          initialNumToRender={5}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           renderItem={({item}) => listStory(item)}
@@ -74,6 +80,61 @@ function Home() {
     );
   };
 
+const renderRecipeCard=()=>{
+  return (
+   
+    <ScrollView>
+
+      
+      <FlatList
+            bounces={false}
+            numColumns={2}
+            showsVerticalScrollIndicator={false}
+            data={RecipeDetails}
+            renderItem={({item}) => listRecipeCard(item)}
+            keyExtractor={(item) => item.id}
+      />
+
+    </ScrollView>
+    
+  )
+}
+
+const listRecipeCard=(item)=>{
+  return (
+<View style={{flex:1,alignItems:'center'}} >
+  
+
+  <SafeAreaView>
+      <View style={{flexDirection:'row',}}>
+        
+  <CustomImage source={{uri:item.userImg}} style={{
+    height: OPTION_WIDTH-20,
+    width: OPTION_WIDTH-20,
+    borderRadius:OPTION_WIDTH/4,
+    marginVertical:18,
+  }}/>
+  <Text style={{alignSelf:'center',marginLeft:8, fontSize:15, fontFamily:'sans-serif-medium',fontWeight:'normal',  letterSpacing: 0.5,color:'#2E3E5C',}}>{item.username}</Text>
+  </View>
+
+  <CustomImage source={{uri:item.recipeImg}} style={{ 
+    height: width/2.5,
+    width:width/2.5,
+    borderRadius:16,
+   }}/>
+   <View style={{height:25,width:25,position:'absolute', top:110, right:10,  justifyContent:'center',alignItems:'center',
+}}>
+    <Ionicons name='heart-outline' color={'white'} size={20} blurRadius={8} />
+   </View>
+   <View/>
+  <Text style={styles.recipeName} >{item.recipeName}</Text>
+  <Text style={{letterSpacing: 0.5,color:GlobalStyles.colorCodes.grey, fontFamily:'sans-serif-medium'}}>{item.category} . {item.cookingDuration} mins</Text>
+  </SafeAreaView>
+
+</View>
+  ) 
+}
+
   const onTabpress=(index)=>{
 if (index !== selectedItemIndex){
   setselectedItemIndex(index);
@@ -81,17 +142,17 @@ if (index !== selectedItemIndex){
   }
   return (
     <View style={styles.container}>
-      
-
       <SafeAreaView />
-     
-
-      {<RenderStory />}
+      {renderStory()}
       <View style={styles.categoryView}>
         <Text style={styles.categoryTitle}>Category</Text>
         {renderCategory()}
       </View>
       <View style={styles.spacing}/>
+     
+
+     {renderRecipeCard()} 
+
     </View>
   );
 }
@@ -102,18 +163,20 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.colorCodes.white,
   },
   storyIcon: {
-    height: 56,
-    width: 56,
+    height: OPTION_WIDTH,
+    width:  OPTION_WIDTH,
+    borderRadius:OPTION_WIDTH,
     resizeMode: 'contain',
+    
   },
   storyBtn: {
     marginTop: 17,
     borderWidth:2,
     borderColor:GlobalStyles.colorCodes.lightyellow,
-    marginHorizontal: 8.5,
-    height: 59,
-    width: 59,
-    borderRadius: 59,
+    marginHorizontal: 7.5,
+    height: OPTION_WIDTH+3,
+    width:  OPTION_WIDTH+3,
+    borderRadius:  OPTION_WIDTH+3,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -135,6 +198,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 48,
+  },
+  recipeName:{
+    letterSpacing: 1,
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: GlobalStyles.colorCodes.darkGrey,
+
   },
   spacing:{paddingVertical:4, backgroundColor:GlobalStyles.colorCodes.veryLightGrey,marginTop:23},
   selectedTab: {

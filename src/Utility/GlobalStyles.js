@@ -27,7 +27,9 @@ var GlobalStyles = {
     lightOrange: '#FC9240',
     green: '#228B22',
     errorRed: '#bd5d5b',
-    lightyellow: '#FFF395'
+    lightyellow: '#FFF395',
+    veryDarkGrey:'#2E3E5C'
+    
   },
   defaultBtn: {
     height: 50,
