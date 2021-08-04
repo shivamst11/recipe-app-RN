@@ -35,9 +35,12 @@ function CustomHeader(props) {
 
 const styles = StyleSheet.create({
   headerView: {
+    
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    
+    
   },
 });
 

@@ -28,7 +28,8 @@ var GlobalStyles = {
     green: '#228B22',
     errorRed: '#bd5d5b',
     lightyellow: '#FFF395',
-    veryDarkGrey:'#2E3E5C'
+    veryDarkGrey:'#2E3E5C',
+    darkYellow:'#8B8000'
     
   },
   defaultBtn: {
@@ -45,6 +46,9 @@ var GlobalStyles = {
     fontSize: 20,
     fontWeight:'bold',
     color: '#FF6464',
+    marginLeft:24,
+    letterSpacing: 0.5
+    
   },
   headerTitle: {
     fontSize: 16,
@@ -73,9 +77,12 @@ var GlobalStyles = {
   },
   backBtn: {
     height: 44,
-    width: 65,
+  
+    
     alignItems: 'center',
     justifyContent: 'center',
+ 
+   
   },
 
 };

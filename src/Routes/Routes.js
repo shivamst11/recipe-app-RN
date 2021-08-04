@@ -21,16 +21,49 @@ import Search from '../Component/Search';
 import GlobalStyles from '../Utility/GlobalStyles';
 import CustomImage from '../ReusableComponents/CustomImage';
 
+import { createStackNavigator , TransitionPresets} from '@react-navigation/stack';
+
+import Camera from '../Component/Camera';
+
+
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+
+
+const getTabBarVisibility = (route) => {
+  console.log("object1",route.state.routes[route.state.index].name);
+ /* const routeName = route.state
+    ? route.state.routes[route.state.index].name
+    : '';
+
+  if (routeName === 'Post') {
+    return false;
+  }
+
+  return true;*/
+}
+
+
+function PostStackScreen() {
+  return (
+    <Stack.Navigator 
+    initialRouteName= 'PostScreen'
+     >
+     <Stack.Screen name="PostScreen" component={Post}   options={{headerShown: false, ...TransitionPresets.SlideFromRightIOS}}/>  
+     <Stack.Screen name="Camera" component={Camera}   options={{headerShown: false, ...TransitionPresets.SlideFromRightIOS}}/>       
+    </Stack.Navigator>
+   );
+ }
 
 function MainRoute() {
-  const {grey, lightyellow, black} =GlobalStyles.colorCodes
+  const {grey, black} =GlobalStyles.colorCodes
   return (
     <NavigationContainer>
       <Tab.Navigator
         tabBarOptions={{
+          
           activeTintColor: GlobalStyles.colorCodes.lightyellow,
-          style: { borderTopWidth: 0 }
+          style: { borderTopWidth: 0, }
         }}>
         <Tab.Screen
           name="Home"
@@ -42,24 +75,37 @@ function MainRoute() {
             tabBarIcon: ({color, size}) => (
               <MaterialIcons name="home-filled" color={color} size={size} />
             ),
+            
           }}
         />
+        
  
         <Tab.Screen
           name="Post"
-          component={Post}
-          options={{
+         
+          component={PostStackScreen}
+          listeners={({ navigation, route,  }) => ({
+            tabPress: e => {
+              if (route.state && route.state.routeNames.length > 0) {
+                  navigation.navigate('PostScreen')
+              }
+            },
+          })}
+          options={({ route }) => ({
+            
+            tabBarVisible: false,
             tabBarLabel: ({focused}) => (
               <MyTabBarLabel title={'Post'} focused={focused} />
             ),
             tabBarIcon: ({color, size}) => (
+              
               <MaterialCommunityIcons
                 name="lead-pencil"
                 color={color}
                 size={size}
               />
             ),
-          }}
+          })}
         />
 
         <Tab.Screen
@@ -70,13 +116,12 @@ function MainRoute() {
               <MyTabBarLabel title={'Search'} focused={focused} />
             ),
             tabBarIcon: ({focused}) => (
-              <View style={styles.searchCircle}>
+             
                 <CustomImage
-                  
                   source={require('../Assets/Image/search.png')}
                   style={[styles.searchImg,focused?{tintColor:black}:{tintColor:grey}]}
                 />
-              </View>
+             
             ),
           }}
         />

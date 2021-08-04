@@ -103,11 +103,8 @@ const renderRecipeCard=()=>{
 const listRecipeCard=(item)=>{
   return (
 <View style={{flex:1,alignItems:'center'}} >
-  
-
   <SafeAreaView>
       <View style={{flexDirection:'row',}}>
-        
   <CustomImage source={{uri:item.userImg}} style={{
     height: OPTION_WIDTH-20,
     width: OPTION_WIDTH-20,
@@ -124,7 +121,7 @@ const listRecipeCard=(item)=>{
    }}/>
    <View style={{height:25,width:25,position:'absolute', top:110, right:10,  justifyContent:'center',alignItems:'center',
 }}>
-    <Ionicons name='heart-outline' color={'white'} size={20} blurRadius={8} />
+    <Ionicons name='heart-outline' color={'white'} size={20}  />
    </View>
    <View/>
   <Text style={styles.recipeName} >{item.recipeName}</Text>
