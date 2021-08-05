@@ -13,6 +13,8 @@ import {
   SafeAreaView,
   FlatList,
   Dimensions,
+  ScrollView,
+  LogBox
 } from 'react-native';
 import CustomImage from '../ReusableComponents/CustomImage';
 import {storyData} from '../data/story';
@@ -24,7 +26,10 @@ import {observer} from 'mobx-react-lite';
 import RecipeStore from '../Store/RecipeStore';
 import {toJS} from 'mobx';
 
-let {width} = Dimensions.get('window');
+LogBox.ignoreAllLogs();
+
+
+let {width} = Dimensions.get('window');   // taking window width
 
 const OPTION_WIDTH = (width - 120) / 4;
 
@@ -32,6 +37,8 @@ const Home = observer(() => {
 
   const [selectedItemIndex, setselectedItemIndex] = useState(0);
 
+
+  // function for rendering story
   const renderStory = () => {
     return (
       <View>
@@ -54,9 +61,10 @@ const Home = observer(() => {
     );
   };
 
+  // function for rendering category of food 
   const renderCategory = () => {
     return (
-      <View>
+      <View >
         <FlatList
           data={category}
           initialNumToRender={4}
@@ -91,9 +99,11 @@ const Home = observer(() => {
     );
   };
 
+
+  // function for rendering recipe Details on Card
   const renderRecipeCard = () => {
     return (
-     
+     <View >
         <FlatList
           bounces={false}
           numColumns={2}
@@ -102,6 +112,7 @@ const Home = observer(() => {
           renderItem={({item}) => listRecipeCard(item)}
           keyExtractor={item => item.id}
         />
+        </View>
      
     );
   };
@@ -140,21 +151,36 @@ const Home = observer(() => {
     );
   };
 
+
+  // function for handling color of Category during click 
   const onTabpress = index => {
     if (index !== selectedItemIndex) {
       setselectedItemIndex(index);
     }
   };
+
+
+
   return (
     <View style={styles.container}>
       <SafeAreaView />
+      <ScrollView
+      ref={(c) => {
+        scroll = c;
+      }}
+      keyboardShouldPersistTaps={'always'}
+      showsVerticalScrollIndicator={false}
+      stickyHeaderIndices={[1]}
+      >
       {renderStory()}
       <View style={styles.categoryView}>
+
         <Text style={styles.categoryTitle}>Category</Text>
         {renderCategory()}
       </View>
       <View style={styles.spacing} />
       {renderRecipeCard()}
+      </ScrollView>
     </View>
   );
 });
@@ -181,7 +207,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  categoryView: {marginTop: 24},
+  categoryView: {
+    backgroundColor:'white',
+    marginTop: 24,
+    paddingBottom:10
+  },
 
   categoryTitle: {
     letterSpacing: 1,
