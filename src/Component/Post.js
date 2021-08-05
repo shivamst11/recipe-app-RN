@@ -5,32 +5,32 @@
  * @flow
  */
 
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   Text,
   View,
   StyleSheet,
-  Image,
   TextInput,
   Alert,
   ScrollView,
   SafeAreaView,
-  Button,
 } from 'react-native';
 
 import GlobalStyles from '../Utility/GlobalStyles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomButton from '../ReusableComponents/CustomButton';
 import Slider from '@react-native-community/slider';
-
 import RecipeStore from '../Store/RecipeStore';
 import {observer} from 'mobx-react-lite';
 import CustomImage from '../ReusableComponents/CustomImage';
-import {observable, toJS} from 'mobx';
-import { getAsync, setAsync } from '../Utility/AsyncStorageUtil';
+
 
 const Post1 = observer(({navigation, props}) => {
+  
+  //cooking duration time  from slider
   const [slider, setSlider] = useState(30);
+
+  // state for recipeDetails
   const [recipeD, setRecipeD] = useState({
     recipeName: '',
     category: 'Food',
@@ -39,47 +39,59 @@ const Post1 = observer(({navigation, props}) => {
     userImg: 'https://iili.io/Abw35g.png',
   });
 
+
   const numofRecipe = RecipeStore.recipeDetails.length;
-  recipeD['id'] = numofRecipe+1;
+  recipeD['id'] = numofRecipe + 1;
   recipeD['recipeImg'] = RecipeStore.recipedata.get();
-  recipeD['cookingDuration'] = slider; 
+  recipeD['cookingDuration'] = slider;
 
-  console.log(recipeD);
-
- 
+  // on click next saving all the data in mobx store
   const onClickNext = async () => {
-   
-   
-    RecipeStore.recipeDetails.push(recipeD)
-    Alert.alert('Your Recipe is successfully posted')
-   
-    console.log("before async",await getAsync('1'));
-   await setAsync("1",toJS(RecipeStore.recipeDetails))
-   
+    Alert.alert("Foodies' Spot", 'Confirm to post recipe', [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+      {
+        text: 'OK',
+        onPress: () => {
+          postRecipe();
+        },
+      },
+    ]);
   };
 
-  const print2 = async() => {
-   let datas =  await getAsync("1")
-  console.log("datas",datas);
+  // function for posting recipe on feeds
+  const postRecipe = () => {
+    setRecipeD({
+      recipeName: '',
+      category: 'Food',
+      recipeDiscrption: '',
+      username: 'Ben',
+      userImg: 'https://iili.io/Abw35g.png',
+    });
+    RecipeStore.recipedata.set(0);
+    RecipeStore.enableImg.set(false);
+    navigation.goBack();
+    RecipeStore.recipeDetails.push(recipeD);
+    navigation.navigate('Home');
+  };
 
-   console.log("alldata",RecipeStore.recipeDetails );
-  }
- 
-    const backbtn = () => {
-   setRecipeD({
-     
-    recipeName: '',
-    category: 'Food',
-    recipeDiscrption: '',
-    username: 'Ben',
-    userImg: 'https://iili.io/Abw35g.png',
-  })
-  
+  // handling cancel/ backbutton button
+  const backbtn = () => {
+    setRecipeD({
+      recipeName: '',
+      category: 'Food',
+      recipeDiscrption: '',
+      username: 'Ben',
+      userImg: 'https://iili.io/Abw35g.png',
+    });
     RecipeStore.recipedata.set(0);
     RecipeStore.enableImg.set(false);
     navigation.goBack();
   };
 
+  //function for rendering header
   const RenderHeader = () => {
     return (
       <View style={styles.headerView}>
@@ -91,8 +103,7 @@ const Post1 = observer(({navigation, props}) => {
     );
   };
 
- 
-
+  // function for showing image preview
   const imageContainer = () => {
     return !RecipeStore.enableImg.get() ? (
       <View style={styles.imgBox}>
@@ -103,7 +114,6 @@ const Post1 = observer(({navigation, props}) => {
           color={GlobalStyles.colorCodes.grey}
           style={styles.icon}
         />
-
         <Text
           onPress={() => navigation.navigate('Camera')}
           style={styles.boxHeading}>
@@ -127,8 +137,6 @@ const Post1 = observer(({navigation, props}) => {
       </View>
     );
   };
-
-
 
   return (
     <View style={styles.container}>
@@ -199,21 +207,20 @@ const Post1 = observer(({navigation, props}) => {
               value={slider}
             />
           </View>
-         
 
-          <CustomButton onPress={() => onClickNext()} style={styles.nextBtn}>
+          <CustomButton
+            disabled={recipeD.enableButton}
+            onPress={() => onClickNext()}
+            style={styles.nextBtn}>
             <Text style={styles.btnText}> Next</Text>
           </CustomButton>
-          
-          <CustomButton onPress={() => print2()} style={styles.nextBtn}>
-            <Text style={styles.btnText}> Next</Text>
-          </CustomButton>
-          
         </ScrollView>
       </View>
     </View>
   );
 });
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -5,46 +5,47 @@ import GlobalStyles from '../Utility/GlobalStyles';
 import {RNCamera} from 'react-native-camera';
 import CustomHeader from '../ReusableComponents/CustomHeader';
 import CustomButton from '../ReusableComponents/CustomButton';
-import { observer } from 'mobx-react-lite';
+import {observer} from 'mobx-react-lite';
 import RecipeStore from '../Store/RecipeStore';
 
-
-const  Camera = observer( ({navigation}) =>{
+const Camera = observer(({navigation}) => {
   const [takingPic, setTakingPic] = useState(true);
+
   const [btnColor, setBtnColor] = useState(GlobalStyles.colorCodes.lightyellow);
 
+  //function for capuring image on click capture and handling exception
   const takePicture = async () => {
-    let data ='';
+    let data = '';
     if (takingPic) {
       let options = {
         quality: 0.1,
         base64: true,
       };
+
       setTakingPic(false);
       setBtnColor(GlobalStyles.colorCodes.darkYellow);
+
       try {
-         data = await camera.takePictureAsync(options);
+        data = await camera.takePictureAsync(options);
         stringData = await JSON.stringify(data);
-      //  Alert.alert('Photo Captured')
-    
-      RecipeStore.recipedata.set(data.uri)
-      RecipeStore.enableImg.set(true)
-        
+        //  Alert.alert('Photo Captured')
+        RecipeStore.recipedata.set(data.uri);
+        RecipeStore.enableImg.set(true);
+
       } catch (err) {
         Alert.alert('Error', 'Failed to take picture: ' + (err.message || err));
         return;
+
       } finally {
         setTakingPic(true);
         setBtnColor(GlobalStyles.colorCodes.lightyellow);
-        navigation.navigate('PostScreen')
-       
+        navigation.navigate('PostScreen');
       }
     }
-
-  }
-
+  };
 
   return (
+
     <View style={styles.container}>
       <CustomHeader navigation={navigation} />
 
@@ -62,6 +63,7 @@ const  Camera = observer( ({navigation}) =>{
           buttonNegative: 'Cancel',
         }}
       />
+
       <View style={[styles.btnView, {backgroundColor: btnColor}]}>
         <CustomButton onPress={() => takePicture()}>
           <Text style={styles.btnText}></Text>
@@ -69,16 +71,13 @@ const  Camera = observer( ({navigation}) =>{
       </View>
     </View>
   );
-}
-)
-
+});
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: GlobalStyles.colorCodes.white,
   },
-
   btnText: {
     height: 56,
     width: 56,

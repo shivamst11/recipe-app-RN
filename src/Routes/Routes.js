@@ -5,13 +5,12 @@
  * @flow
  */
 
-import React from 'react';
-import {Text, View, StyleSheet, Image} from 'react-native';
+import React,{useState} from 'react';
+import {Text, View, StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Home from '../Component/Home';
 import Post from '../Component/Post';
@@ -20,9 +19,7 @@ import Notification from '../Component/Notification';
 import Search from '../Component/Search';
 import GlobalStyles from '../Utility/GlobalStyles';
 import CustomImage from '../ReusableComponents/CustomImage';
-
 import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
-
 import Camera from '../Component/Camera';
 
 const Tab = createBottomTabNavigator();
@@ -30,6 +27,7 @@ const Stack = createStackNavigator();
 
 
 
+// stack for Post screnn 
 function PostStackScreen() {
   return (
     <Stack.Navigator initialRouteName="PostScreen">
@@ -48,6 +46,8 @@ function PostStackScreen() {
   );
 }
 
+
+// main route of the application containing buttom tab navigator
 function MainRoute() {
   const {grey, black} = GlobalStyles.colorCodes;
   return (
@@ -55,7 +55,7 @@ function MainRoute() {
       <Tab.Navigator
         tabBarOptions={{
           activeTintColor: GlobalStyles.colorCodes.lightyellow,
-          style: {borderTopWidth: 0},
+          style: {borderTopWidth: 0, paddingTop:5},
         }}>
         <Tab.Screen
           name="Home"
@@ -75,6 +75,7 @@ function MainRoute() {
           component={PostStackScreen}
           listeners={({navigation, route}) => ({
             tabPress: e => {
+             
               if (route.state && route.state.routeNames.length > 0) {
                 navigation.navigate('PostScreen');
               }
@@ -87,6 +88,7 @@ function MainRoute() {
             ),
             tabBarIcon: ({color, size}) => (
               <MaterialCommunityIcons
+              
                 name="lead-pencil"
                 color={color}
                 size={size}
@@ -102,15 +104,18 @@ function MainRoute() {
             tabBarLabel: ({focused}) => (
               <MyTabBarLabel title={'Search'} focused={focused} />
             ),
-            tabBarIcon: ({focused}) => (
+            tabBarIcon: ({focused,props}) =>(
+              <View style={styles.searchCircle}>
               <CustomImage
                 source={require('../Assets/Image/search.png')}
                 style={[
                   styles.searchImg,
-                  focused ? {tintColor: black} : {tintColor: grey},
+                 focused ? {tintColor: black} : {tintColor: grey},
                 ]}
               />
-            ),
+              </View>
+           )
+                   
           }}
         />
 
@@ -144,12 +149,13 @@ function MainRoute() {
           }}
         />
 
-
       </Tab.Navigator>
     </NavigationContainer>
   );
 }
 
+
+//function for handling color and text of botton tab title
 function MyTabBarLabel(props) {
   return (
     <Text
@@ -179,12 +185,11 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
   searchCircle: {
-    position: 'absolute',
-    bottom: 5,
-    height: 56,
-    width: 56,
+    backgroundColor:GlobalStyles.colorCodes.lightyellow,
+    
+    height: 35,
+    width: 35,
     borderRadius: 56,
-    backgroundColor: GlobalStyles.colorCodes.lightyellow,
     justifyContent: 'center',
     alignItems: 'center',
   },

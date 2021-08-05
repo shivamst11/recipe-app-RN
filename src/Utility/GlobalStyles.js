@@ -65,6 +65,7 @@ var GlobalStyles = {
 
   fullFlex: {
     flex: 1,
+    alignItems: 'center'
   },
   keyboardAvoider: {
     flexGrow: 1,
