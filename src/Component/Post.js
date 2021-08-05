@@ -5,7 +5,7 @@
  * @flow
  */
 
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   View,
@@ -14,54 +14,145 @@ import {
   TextInput,
   Alert,
   ScrollView,
+  SafeAreaView,
+  Button,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import CustomHeader from '../ReusableComponents/CustomHeader';
+
 import GlobalStyles from '../Utility/GlobalStyles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomButton from '../ReusableComponents/CustomButton';
 import Slider from '@react-native-community/slider';
-import {color} from 'react-native-reanimated';
 
-function Post({navigation}) {
+import RecipeStore from '../Store/RecipeStore';
+import {observer} from 'mobx-react-lite';
+import CustomImage from '../ReusableComponents/CustomImage';
+import {observable, toJS} from 'mobx';
+import { getAsync, setAsync } from '../Utility/AsyncStorageUtil';
+
+const Post1 = observer(({navigation, props}) => {
   const [slider, setSlider] = useState(30);
+  const [recipeD, setRecipeD] = useState({
+    recipeName: '',
+    category: 'Food',
+    recipeDiscrption: '',
+    username: 'Ben',
+    userImg: 'https://iili.io/Abw35g.png',
+  });
 
+  const numofRecipe = RecipeStore.recipeDetails.length;
+  recipeD['id'] = numofRecipe+1;
+  recipeD['recipeImg'] = RecipeStore.recipedata.get();
+  recipeD['cookingDuration'] = slider; 
 
+  console.log(recipeD);
 
+ 
+  const onClickNext = async () => {
+   
+   
+    RecipeStore.recipeDetails.push(recipeD)
+    Alert.alert('Your Recipe is successfully posted')
+   
+    console.log("before async",await getAsync('1'));
+   await setAsync("1",toJS(RecipeStore.recipeDetails))
+   
+  };
+
+  const print2 = async() => {
+   let datas =  await getAsync("1")
+  console.log("datas",datas);
+
+   console.log("alldata",RecipeStore.recipeDetails );
+  }
+ 
+    const backbtn = () => {
+   setRecipeD({
+     
+    recipeName: '',
+    category: 'Food',
+    recipeDiscrption: '',
+    username: 'Ben',
+    userImg: 'https://iili.io/Abw35g.png',
+  })
   
+    RecipeStore.recipedata.set(0);
+    RecipeStore.enableImg.set(false);
+    navigation.goBack();
+  };
+
+  const RenderHeader = () => {
+    return (
+      <View style={styles.headerView}>
+        <SafeAreaView />
+        <CustomButton onPress={() => backbtn()} style={GlobalStyles.backBtn}>
+          <Text style={GlobalStyles.buttonTitle}>Cancel</Text>
+        </CustomButton>
+      </View>
+    );
+  };
+
+ 
+
+  const imageContainer = () => {
+    return !RecipeStore.enableImg.get() ? (
+      <View style={styles.imgBox}>
+        <Ionicons
+          onPress={() => navigation.navigate('Camera')}
+          name="md-image"
+          size={53.3}
+          color={GlobalStyles.colorCodes.grey}
+          style={styles.icon}
+        />
+
+        <Text
+          onPress={() => navigation.navigate('Camera')}
+          style={styles.boxHeading}>
+          Add Cover Photo
+        </Text>
+        <Text
+          onPress={() => navigation.navigate('Camera')}
+          style={styles.boxText}>{`(Up to 12 Mb)`}</Text>
+      </View>
+    ) : (
+      <View style={styles.imgBox}>
+        <CustomImage
+          style={styles.cptImage}
+          source={{uri: RecipeStore.recipedata.get()}}
+        />
+        <Text
+          onPress={() => navigation.navigate('Camera')}
+          style={styles.reTake}>
+          retake
+        </Text>
+      </View>
+    );
+  };
+
+
 
   return (
     <View style={styles.container}>
-      <CustomHeader navigation={navigation} />
+      <RenderHeader />
       <View style={{marginHorizontal: 24}}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           alwaysBounceVertical={false}>
-          <View style={styles.imgBox}>
-            <Ionicons
-              onPress={() =>  navigation.navigate('Camera')
-               }
-              name="md-image"
-              size={53.3}
-              color={GlobalStyles.colorCodes.grey}
-              style={styles.icon}
-            />
-            <Text
-              onPress={() => navigation.navigate('Camera')}
-              style={styles.boxHeading}>
-              Add Cover Photo
-            </Text>
-            <Text
-              onPress={() => navigation.navigate('Camera')}
-              style={styles.boxText}>{`(Up to 12 Mb)`}</Text>
-          </View>
+          {imageContainer()}
+
           <Text style={styles.title}>Recipe Name</Text>
           <TextInput
+            value={recipeD.recipeName}
+            onChangeText={text => setRecipeD({...recipeD, recipeName: text})}
             placeholder={'Enter recipe name'}
             style={styles.recipeInput}
           />
+
           <Text style={styles.title}>Discription</Text>
           <TextInput
+            value={recipeD.recipeDiscrption}
+            onChangeText={text =>
+              setRecipeD({...recipeD, recipeDiscrption: text})
+            }
             placeholder={'Tell the community a little about your recipe'}
             style={styles.discriptionInput}
           />
@@ -70,6 +161,7 @@ function Post({navigation}) {
             <Text style={styles.title}>Cooking Duration</Text>
             <Text style={styles.time}>{` (in minutes)`}</Text>
           </View>
+
           <View>
             <View style={styles.flexRow}>
               <Text
@@ -94,6 +186,7 @@ function Post({navigation}) {
                     : {color: GlobalStyles.colorCodes.lightyellow},
                 ]}>{`>60`}</Text>
             </View>
+
             <Slider
               style={styles.slider}
               onValueChange={value => setSlider(value)}
@@ -106,23 +199,27 @@ function Post({navigation}) {
               value={slider}
             />
           </View>
+         
 
-          <CustomButton
-            onPress={() => Alert.alert('df')}
-            style={styles.nextBtn}>
+          <CustomButton onPress={() => onClickNext()} style={styles.nextBtn}>
             <Text style={styles.btnText}> Next</Text>
           </CustomButton>
+          
+          <CustomButton onPress={() => print2()} style={styles.nextBtn}>
+            <Text style={styles.btnText}> Next</Text>
+          </CustomButton>
+          
         </ScrollView>
       </View>
     </View>
   );
-}
-
+});
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
   },
+
   btnText: {
     alignSelf: 'center',
     marginTop: 18,
@@ -215,6 +312,18 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
   },
+  cptImage: {width: 379, height: 157, borderRadius: 16},
+  reTake: {
+    position: 'absolute',
+    right: 10,
+    color: GlobalStyles.colorCodes.black,
+    fontWeight: 'bold',
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 4,
+    top: 5,
+    backgroundColor: GlobalStyles.colorCodes.veryLightGrey,
+  },
 });
 
-export default Post;
+export default Post1;

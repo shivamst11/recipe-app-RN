@@ -5,7 +5,7 @@
  * @flow
  */
 
-import  React,{useState} from 'react';
+import  React,{useState, useEffect} from 'react';
 import {
   Text,
   View,
@@ -23,13 +23,25 @@ import {category} from '../data/category';
 import { RecipeDetails } from '../data/recipeDetails';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { BlurView, VibrancyView } from "@react-native-community/blur";
+import { observer } from 'mobx-react-lite';
+import RecipeStore from '../Store/RecipeStore';
+import { toJS } from 'mobx';
+import { getAsync, setAsync } from '../Utility/AsyncStorageUtil';
 
 let {width} = Dimensions.get('window');
 
 const OPTION_WIDTH = (width - 120) / 4;
 
-function Home() {
+const  Home=observer(()=> {
+ 
+  const [cardData, setCardData] =  useState([])
+  useEffect(async() =>{
+    await setAsync('1', RecipeStore.recipeDetails)
+  let  Data = await getAsync('1')
+  setCardData ( JSON.parse(Data));
+  console.log("card data ",cardData );
 
+})
  
   const [selectedItemIndex, setselectedItemIndex]=useState(0);
 
@@ -90,7 +102,7 @@ const renderRecipeCard=()=>{
             bounces={false}
             numColumns={2}
             showsVerticalScrollIndicator={false}
-            data={RecipeDetails}
+            data={cardData}
             renderItem={({item}) => listRecipeCard(item)}
             keyExtractor={(item) => item.id}
       />
@@ -153,6 +165,7 @@ if (index !== selectedItemIndex){
     </View>
   );
 }
+)
 
 const styles = StyleSheet.create({
   container: {

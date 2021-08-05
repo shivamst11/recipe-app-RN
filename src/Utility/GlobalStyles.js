@@ -28,9 +28,8 @@ var GlobalStyles = {
     green: '#228B22',
     errorRed: '#bd5d5b',
     lightyellow: '#FFF395',
-    veryDarkGrey:'#2E3E5C',
-    darkYellow:'#8B8000'
-    
+    veryDarkGrey: '#2E3E5C',
+    darkYellow: '#8B8000',
   },
   defaultBtn: {
     height: 50,
@@ -42,20 +41,18 @@ var GlobalStyles = {
     flexDirection: 'row',
   },
   buttonTitle: {
-  fontFamily: 'Inter',
+    fontFamily: 'Inter',
     fontSize: 20,
-    fontWeight:'bold',
+    fontWeight: 'bold',
     color: '#FF6464',
-    marginLeft:24,
-    letterSpacing: 0.5
-    
+    marginLeft: 24,
+    letterSpacing: 0.5,
   },
   headerTitle: {
     fontSize: 16,
     fontWeight: 'bold',
   },
   listFooter: {
-    
     height: 60,
     alignItems: 'center',
     justifyContent: 'center',
@@ -65,7 +62,7 @@ var GlobalStyles = {
     alignItems: 'center',
     marginTop: 60,
   },
- 
+
   fullFlex: {
     flex: 1,
   },
@@ -77,14 +74,9 @@ var GlobalStyles = {
   },
   backBtn: {
     height: 44,
-  
-    
-    alignItems: 'center',
     justifyContent: 'center',
- 
-   
+    width:100
   },
-
 };
 
 export default GlobalStyles;

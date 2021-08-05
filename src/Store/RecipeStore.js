@@ -1,5 +1,16 @@
-export const RecipeDetails = [
-  {
+import {action, observable, configure} from 'mobx';
+import {observer} from 'mobx-react-lite';
+
+
+
+
+class RecipeStore {
+
+count = observable.box(2)
+ recipedata=observable.box(0)
+ enableImg=observable.box(false)
+
+ recipeDetails= observable.array([ {
     id: 1,
     category: 'Food',
     username: 'Calum Lewis',
@@ -52,5 +63,14 @@ export const RecipeDetails = [
     recipeImg: 'https://iili.io/Ab8yu9.th.png',
     recipeName: 'Corrjlfdsect',
     cookingDuration: 30,
-  },
-];
+  },])
+
+
+
+
+
+}
+configure({
+    enforceActions: 'true'
+    });
+export default new RecipeStore;
