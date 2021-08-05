@@ -6,53 +6,36 @@
  * @flow strict-local
  */
 
- import React, {Component} from 'react';
+import React, {Component} from 'react';
 
 import {
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-  
+
 } from 'react-native';
 import {
-  initialWindowMetrics,
   SafeAreaProvider,
 } from 'react-native-safe-area-context';
 import MainRoute from './src/Routes/Routes';
 
-
-
-const App =() => {
- 
-
+const App = () => {
   return (
-
-<SafeAreaProvider>
-
-<StatusBar
-          backgroundColor={"#fff"}
-          barStyle={'dark-content'}
-        />
-
-      <MainRoute/>
- 
-</SafeAreaProvider>
- 
-  
+    <SafeAreaProvider>
+      <StatusBar backgroundColor={'#fff'} barStyle={'dark-content'} />
+      <MainRoute />
+    </SafeAreaProvider>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems:'center',
-  
-    justifyContent:'center',
-    backgroundColor: 'white'
+    alignItems: 'center',
+
+    justifyContent: 'center',
+    backgroundColor: 'white',
   },
 });
 
