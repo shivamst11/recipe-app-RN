@@ -10,4 +10,4 @@ run below commands in terminal
 there are some screenshots of application
 ![](screenShot/home_screen.jpeg)
 ![](screeShot/post_screen.jpeg)
-![](screeShot/camera_screen.jpeg)
+![](screeShot/camera_screen.jp
